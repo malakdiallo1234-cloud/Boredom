@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>boredom.zip</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e3eae4, #d8e2dc, #d0dcd6);
+            --card-bg: #fcfbfa;
+            --primary-blue: #5d9cec;
+            --primary-blue-hover: #4a8bdf;
+            --tag-brown: #6d4c41;
+            --accent-green: #81c784;
+            --text-dark: #2d2d2d;
+            --text-muted: #616161;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--text-dark);
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 32px;
+            padding: 35px 25px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+            text-align: center;
+            position: relative;
+            min-height: 560px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border: 1px solid rgba(255,255,255,0.8);
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            flex-grow: 1;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .tag {
+            background: var(--tag-brown);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            align-self: center;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .tag.green-tag {
+            background: var(--accent-green);
+        }
+
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        p {
+            font-size: 15px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .btn-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 100%;
+            margin: 15px 0;
+        }
+
+        .menu-btn {
+            background: var(--primary-blue);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(93, 156, 236, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .menu-btn:hover {
+            background: var(--primary-blue-hover);
+            transform: translateY(-1px);
+        }
+
+        .menu-btn.locked {
+            background: #b0bec5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .menu-btn.locked:hover {
+            transform: none;
+            background: #b0bec5;
+        }
+
+        .menu-btn.back-btn {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+            box-shadow: none;
+            margin-top: 15px;
+            padding: 12px;
+        }
+
+        .status-box {
+            background: white;
+            padding: 14px 20px;
+            border-radius: 16px;
+            margin-bottom: 10px;
+            text-align: left;
+            font-weight: 500;
+            border: 1px solid rgba(0,0,0,0.04);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-bar-container {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            width: 100%;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-green));
+            height: 100%;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* Styles pour les mèmes rigolos */
+        .meme-container {
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            margin: 15px 0;
+            border: 1px solid #eee;
+        }
+
+        .cat-emoji-large {
+            font-size: 50px;
+            margin: 10px 0;
+            animation: bounce 0.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-10px); }
+        }
+
+        .drake-meme-box {
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 15px 0;
+            border: 2px solid var(--tag-brown);
+        }
+
+        .drake-row {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-bottom: 2px solid var(--tag-brown);
+        }
+
+        .drake-row:last-child {
+            border-bottom: none;
+        }
+
+        .drake-face {
+            font-size: 30px;
+            padding: 15px;
+            background: #ffe0b2;
+            min-width: 70px;
+        }
+
+        .drake-face.yes {
+            background: #c8e6c9;
+        }
+
+        .drake-text {
+            padding: 10px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: bold;
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        
+        <!-- ÉCRAN 1 : STATUS -->
+        <div id="screen-status" class="screen active">
+            <div>
+                <span class="tag">boredom.zip</span>
+                <h1>Checking today's status...</h1>
+                
+                <div class="status-box">🐈 Cats detected</div>
+                <div class="status-box">📩 Envelopes ready</div>
+                <div class="status-box">🎵 Anti-Drake shields active</div>
+                <div class="status-box">🟫 Brown color remembered</div>
+
+                <div class="progress-bar-container">
+                    <div id="main-progress" class="progress-bar"></div>
+                </div>
+                <p id="status-text">✨ Analyse en cours...</p>
+            </div>
+            
+            <div>
+                <button class="menu-btn" id="start-btn" onclick="nextScreen('screen-intro')" style="display: none; width: 100%;">Start Mission</button>
+                <p style="font-size: 12px; font-style: italic; margin-top: 10px;">P.S. Garanti 0% IA, 100% pour toi. 🤎</p>
+            </div>
+        </div>
+
+        <!-- ÉCRAN 2 : HEY PEPE -->
+        <div id="screen-intro" class="screen">
+            <div>
+                <span class="tag">boredom.zip</span>
+                <h1>Hey Petra ☀️</h1>
+                <p>Quelqu'un m'a dit que tu t'ennuyais ferme aujourd'hui...</p>
+                <p>Du coup, je t'ai préparé un petit QG secret. Explore tout pour débloquer le fichier de la fin !</p>
+                <div class="cat-emoji-large">😸</div>
+            </div>
+            <button class="menu-btn" onclick="nextScreen('screen-menu')" style="width:100%;">Let's go ➔</button>
+        </div>
+
+        <!-- ÉCRAN 3 : MENU -->
+        <div id="screen-menu" class="screen">
+            <div>
+                <span class="tag">Menu Principal</span>
+                <h1 style="font-size: 22px; margin-bottom: 5px;">Où va-t-on en premier ?</h1>
+                <p style="font-size: 13px; margin-bottom: 10px;">Progression : <span id="visited-count">0</span>/6 validés</p>
+                
+                <div class="btn-list">
+                    <button class="menu-btn" onclick="openSection('enveloppes')">📩 Les 6 enveloppes</button>
+                    <button class="menu-btn" onclick="openSection('playlist')">🎵 Playlist “Insomnia + Kamaal”</button>
+                    <button class="menu-btn" onclick="openSection('pigeon')">🕊️ Pigeon Express</button>
+                    <button class="menu-btn" onclick="openSection('memory')">🧠 Memory Folder</button>
+                    <button class="menu-btn" onclick="openSection('boredom')">😂 Emergency Boredom Kit</button>
+                    <button class="menu-btn" onclick="openSection('teleport')">🫂 Teleportation Lab</button>
+                    
+                    <button class="menu-btn locked" id="lock-btn" onclick="openSection('classified')" disabled>🔒 Classified File (Bloqué)</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 📩 6 ENVELOPPES -->
+        <div id="screen-enveloppes" class="screen">
+            <div>
+                <span class="tag">Les 6 enveloppes</span>
+                <h1>Choisis bien 📩</h1>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0;">
+                    <button class="menu-btn" style="padding: 10px; background: var(--tag-brown);" onclick="alert('Enveloppe 1 : Ne regarde jamais en arrière, sauf pour voir des mèmes.')">1</button>
+                    <button class="menu-btn" style="padding: 10px; background: var(--accent-green);" onclick="alert('Enveloppe 2 : Miaou. C\'est tout.')">2</button>
+                    <button class="menu-btn" style="padding: 10px;" onclick="alert('Enveloppe 3 : Insomnia + Kamaal est officiellement un classique.')">3</button>
+                    <button class="menu-btn" style="padding: 10px;" onclick="alert('Enveloppe 4 : Le pigeon voyageur a eu un contretemps.')">4</button>
+                    <button class="menu-btn" style="padding: 10px; background: var(--tag-brown);" onclick="alert('Enveloppe 5 : Respire, tu es la meilleure.')">5</button>
+                    <button class="menu-btn" style="padding: 10px; background: var(--accent-green);" onclick="alert('Enveloppe 6 : Le bouton secret va bientôt s\'ouvrir.')">6</button>
+                </div>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('enveloppes')">← Retour</button>
+        </div>
+
+        <!-- 🎵 PLAYLIST + LE MEME DRAKE -->
+        <div id="screen-playlist" class="screen">
+            <div>
+                <span class="tag">Audio Room</span>
+                <h1>Playlist “Insomnia + Kamaal” 🎵</h1>
+                
+                <!-- Le fameux même Drake personnalisé -->
+                <div class="drake-meme-box">
+                    <div class="drake-row">
+                        <div class="drake-face">😒 🫱</div>
+                        <div class="drake-text">Écouter du Drake en boucle</div>
+                    </div>
+                    <div class="drake-row">
+                        <div class="drake-face yes">😎 👉</div>
+                        <div class="drake-text" style="color: #1b5e20;">Écouter la playlist Insomnia + Kamaal</div>
+                    </div>
+                </div>
+
+                <p style="font-size: 13px;">Désolé Drake, mais ici on a de meilleurs goûts musicaux. 💅</p>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('playlist')">← Retour</button>
+        </div>
+
+        <!-- 🕊️ PIGEON EXPRESS + MEME CHAT JUDGE -->
+        <div id="screen-pigeon" class="screen">
+            <div>
+                <span class="tag">Question Cruciale</span>
+                <h1>Pigeon Express 🕊️</h1>
+                
+                <div class="meme-container">
+                    <div style="font-size: 45px;">😾</div>
+                    <p style="font-weight: bold; margin: 5px 0; color: var(--text-dark);">"Le chat te juge en attendant la réponse."</p>
+                </div>
+
+                <p>Est-ce que ton pigeon a livré le courrier secret ?</p>
+                <div class="btn-list">
+                    <button class="menu-btn" style="background: var(--accent-green);" onclick="alert('Le chat valide ta réponse ! 🐾')">Absolument.</button>
+                    <button class="menu-btn" style="background: var(--tag-brown);" onclick="alert('Le chat fronce les sourcils... 🙀')">Non, perdu en route.</button>
+                </div>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('pigeon')">← Retour</button>
+        </div>
+
+        <!-- 🧠 MEMORY FOLDER -->
+        <div id="screen-memory" class="screen">
+            <div>
+                <span class="tag">Stockage</span>
+                <h1>Memory Folder 🧠</h1>
+                <p>Sauvegarde des dossiers importants de ton cerveau.</p>
+                <div style="background: white; border-radius: 16px; padding: 20px; border: 1px dashed var(--tag-brown); text-align: left;">
+                    📁 <code>dossier_souvenirs.zip</code><br>
+                    📁 <code>délires_privés_ultra_secrets.rar</code><br><br>
+                    <span style="color: var(--accent-green); font-weight: bold;">✓ Statut : Sécurisé</span>
+                </div>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('memory')">← Retour</button>
+        </div>
+
+        <!-- 😂 EMERGENCY BOREDOM KIT (MINI-JEU) -->
+        <div id="screen-boredom" class="screen">
+            <div>
+                <span class="tag green-tag">Mini-Jeu</span>
+                <h1>Emergency Boredom Kit 😂</h1>
+                <p>Clique 5 fois pour éliminer l'ennui et débloquer le bouton retour !</p>
+                
+                <div style="background: white; padding: 20px; border-radius: 16px; margin: 15px 0; box-shadow: inset 0 2px 8px rgba(0,0,0,0.05);">
+                    <h2 id="click-counter" style="font-size: 42px; color: var(--primary-blue); font-weight: 800;">0</h2>
+                    <p style="margin: 0; font-size: 12px; font-weight: 600; color: var(--accent-green);" id="click-status">Ennui détecté...</p>
+                </div>
+
+                <button class="menu-btn" onclick="triggerClick()" style="width: 100%; background: var(--accent-green); font-size: 16px;">🔨 EXPLOSER L'ENNUI</button>
+            </div>
+            <button class="menu-btn back-btn" id="boredom-back" onclick="backToMenu('boredom')" style="display:none;">← Retour au QG</button>
+        </div>
+
+        <!-- 🫂 TELEPORTATION LAB -->
+        <div id="screen-teleport" class="screen">
+            <div>
+                <span class="tag">Quantum</span>
+                <h1>Teleportation Lab 🫂</h1>
+                <p>Marre d'être ici ? Clique pour t'évader instantanément.</p>
+                <div class="meme-container" style="background: #f1f8ff;">
+                    <div style="font-size: 50px; animation: bounce 0.3s infinite alternate;">🚀</div>
+                </div>
+                <button class="menu-btn" onclick="alert('Téléportation lancée... Tu as atterri dans un endroit beaucoup plus cool !')" style="width: 100%;">Activer les propulseurs ⚡</button>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('teleport')">← Retour</button>
+        </div>
+
+        <!-- 🔒 CLASSIFIED FILE (DÉBLOQUÉ À LA FIN) -->
+        <div id="screen-classified" class="screen">
+            <div>
+                <span class="tag green-tag">🔓 Mission Accomplie</span>
+                <h1>Classified File 🤫</h1>
+                <p>Tu as fouillé tout le site et survécu aux mèmes !</p>
+                
+                <div style="background: #e8f5e9; border: 2px solid var(--accent-green); padding: 20px; border-radius: 16px; text-align: left; margin: 15px 0;">
+                    <div style="font-size: 35px; margin-bottom: 10px;">🎉 🙀 🥳</div>
+                    <h3 style="color: #2e7d32; margin-bottom: 5px;">Accès VIP accordé</h3>
+                    <p style="font-size: 13px; color: #37474f; margin: 0;">Le verdict est tombé : tu as officiellement vaincu l'ennui du jour. Tu peux fermer cet onglet la tête haute !</p>
+                </div>
+            </div>
+            <button class="menu-btn back-btn" onclick="backToMenu('classified')">← Revenir au menu</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Animation du faux chargement de départ
+        window.addEventListener('DOMContentLoaded', () => {
+            const progress = document.getElementById('main-progress');
+            const statusText = document.getElementById('status-text');
+            const startBtn = document.getElementById('start-btn');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(interval);
+                    statusText.innerText = "✨ Mission ready.";
+                    startBtn.style.display = "block";
+                } else {
+                    width += 25;
+                    progress.style.width = width + '%';
+                    if(width == 25) statusText.innerText = "🐱 Chargement des chats rigolos...";
+                    if(width == 50) statusText.innerText = "🚫 Blocage des sons de Drake...";
+                    if(width == 75) statusText.innerText = "📩 Cachetage des 6 enveloppes...";
+                }
+            }, 400);
+        });
+
+        function nextScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        let visitedSections = new Set();
+        let gameClicks = 0;
+
+        function openSection(sectionId) {
+            nextScreen('screen-' + sectionId);
+        }
+
+        function backToMenu(currentSectionId) {
+            if (currentSectionId !== 'classified') {
+                visitedSections.add(currentSectionId);
+            }
+
+            document.getElementById('visited-count').innerText = visitedSections.size;
+
+            // Une fois que les 6 sections ont été visitées, on débloque le fichier secret
+            if (visitedSections.size >= 6) {
+                const lockBtn = document.getElementById('lock-btn');
+                lockBtn.classList.remove('locked');
+                lockBtn.innerText = "🔓 Classified File (Ouvert !)";
+                lockBtn.removeAttribute('disabled');
+                lockBtn.style.background = "var(--accent-green)";
+                lockBtn.style.boxShadow = "0 4px 10px rgba(129, 199, 132, 0.3)";
+            }
+
+            nextScreen('screen-menu');
+        }
+
+        // Système du mini-jeu clicker
+        function triggerClick() {
+            gameClicks++;
+            document.getElementById('click-counter').innerText = gameClicks;
+            
+            if (gameClicks === 2) document.getElementById('click-status').innerText = "L'ennui tremble... 😤";
+            if (gameClicks === 4) document.getElementById('click-status').innerText = "Presque détruit ! 🔥";
+            
+            if (gameClicks >= 5) {
+                document.getElementById('click-status').innerText = "Ennui vaincu ! 🏆";
+                document.getElementById('boredom-back').style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
