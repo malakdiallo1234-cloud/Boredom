@@ -1,0 +1,92 @@
+:root {
+    --bg-main: #121212;       /* Noir doux de base */
+    --text-cream: #F5EBE6;    /* Crème chaleureux */
+    --accent-brown: #8B5A2B;  /* Marron */
+    --accent-blue: #3A86FF;   /* Bleu */
+    --accent-green: #38B000;  /* Vert */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-cream);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+    transition: background 0.8s ease;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 480px;
+}
+
+/* Cartes et Écrans */
+.status-card, .game-container {
+    background: #1A1A1A;
+    border: 2px solid var(--accent-brown);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.status-title { font-size: 1.1rem; margin-bottom: 20px; }
+.status-line { font-size: 0.95rem; margin-bottom: 10px; opacity: 0; transform: translateY(10px); animation: fadeInUp 0.5s forwards; }
+
+.delayed-1 { animation-delay: 0.8s; }
+.delayed-2 { animation-delay: 1.6s; }
+.delayed-3 { animation-delay: 2.4s; }
+.delayed-4 { animation-delay: 3.2s; }
+.delayed-5 { animation-delay: 4s; }
+
+/* Progress Bar */
+.progress-container { background: #2A2A2A; border-radius: 6px; height: 10px; margin: 20px 0; overflow: hidden; }
+.progress-bar { background: linear-gradient(90deg, var(--accent-brown), var(--accent-blue)); height: 100%; width: 0%; transition: width 3.5s ease-in-out; transition-delay: 4.5s; }
+
+.status-alert { color: var(--accent-blue); font-weight: bold; margin-bottom: 20px; animation: pulse 1.5s infinite alternate; }
+
+.btn-next, .action-btn {
+    background: transparent; border: 2px solid var(--accent-brown); color: var(--text-cream);
+    padding: 12px; font-size: 1rem; cursor: pointer; border-radius: 6px; width: 100%; transition: all 0.3s;
+}
+.btn-next:hover, .action-btn:hover { background: var(--accent-blue); border-color: var(--accent-blue); color: #121212; box-shadow: 0 0 10px var(--accent-blue); }
+
+/* Inventaire */
+.inventory-box { background: #222; border-radius: 8px; padding: 10px; margin-bottom: 20px; border: 1px solid #333; }
+.inventory-box h4 { font-size: 0.85rem; margin-bottom: 8px; color: #aaa; }
+.inventory-items { display: flex; gap: 10px; justify-content: center; }
+.item { font-size: 1.5rem; padding: 5px 10px; border-radius: 4px; background: #2a2a2a; opacity: 0.3; transition: all 0.5s; position: relative; }
+.item.unlocked { opacity: 1; background: rgba(56, 176, 0, 0.2); border: 1px solid var(--accent-green); }
+
+/* Zone d'affichage des pièces */
+.room-screen { min-height: 250px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; margin-bottom: 20px; }
+
+/* Navigation */
+.room-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.nav-btn { background: #252525; border: 1px solid #333; color: var(--text-cream); padding: 8px 2px; font-size: 0.75rem; border-radius: 4px; cursor: pointer; transition: background 0.3s; }
+.nav-btn:hover { background: #333; }
+
+/* --- DESIGN DES MINI-JEUX INTERNES --- */
+/* Cassette */
+.cassette { background: #252525; border: 2px solid var(--text-cream); border-radius: 6px; width: 160px; height: 95px; padding: 8px; margin: 15px auto; cursor: pointer; }
+.cassette-label { background: var(--accent-brown); height: 100%; border-radius: 3px; display: flex; flex-direction: column; justify-content: space-between; padding: 5px; }
+.wheels { display: flex; justify-content: space-around; }
+.wheel { width: 22px; height: 22px; border: 2px dashed #fff; border-radius: 50%; background: #121212; }
+.spinning { animation: spin 1.5s linear infinite; }
+
+/* Boutons Café */
+.cafe-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-top: 15px; }
+
+/* Animations de base */
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+@keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.hidden { display: none !important; }
